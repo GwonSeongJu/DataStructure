@@ -38,17 +38,21 @@ public:
 		return cur;
 		
 	}
-	void PushData(Node<T>* prev, T data) {	//not increase Listsize 
-		Node<T>* node_tmp = new Node<T>;
-
+	void PushNode(Node<T>* prev, Node<T>* data) {
+		Node<T>* node_tmp = data;
 		node_tmp->next = prev->next;
 		node_tmp->prev = prev;
 
 		prev->next = node_tmp;
 
 		node_tmp->next->prev = node_tmp;
-
+	}
+	void PushData(Node<T>* prev, T data) {	//not increase Listsize 
+		Node<T>* node_tmp = new Node<T>;
 		node_tmp->data = data;
+		PushNode(prev, node_tmp);
+
+		
 	}
 
 	void PushData(T data, int index=-1) {
@@ -63,14 +67,17 @@ public:
 
 	
 
-	
+	Node<T>* PopNode(Node<T>* cur) {
+		cur->next->prev = cur->prev;
+		cur->prev->next = cur->next;
+		return cur;
+	}
 	
 	T PopData(Node<T>* cur) {	// not decrease Listsize
 		T data_tmp;
 		data_tmp = cur->data;
 
-		cur->next->prev = cur->prev;
-		cur->prev->next = cur->next;
+		PopNode(cur);
 
 		delete(cur);
 
@@ -93,7 +100,7 @@ public:
 	void Exchange(Node<T>* A, Node<T>* B) {
 		Node<T>* Ahead, *Bhead;
 		Node<T>* Acur, *Bcur;
-		T Adata, Bdata;
+
 		int Aindex=0, Bindex=0;
 		for (Acur = A->prev; Acur->prev != Acur; Acur = Acur->prev)
 			Aindex++;
@@ -102,11 +109,11 @@ public:
 		Ahead = Acur;
 		Bhead = Bcur;
 
-		Adata = PopData(A);
-		PushData(getNode(Bhead, Bindex), Adata);
+		A=PopNode(A);
+		PushNode(getNode(Bhead, Bindex), A);
 
-		Bdata = PopData(B);
-		PushData(getNode(Ahead, Aindex), Bdata);
+		B=PopNode(B);
+		PushNode(getNode(Ahead, Aindex), B);
 
 
 
