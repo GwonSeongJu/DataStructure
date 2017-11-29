@@ -14,6 +14,27 @@ private:
 	ETNode<T>* source;
 	ETNode<T>* cur;
 public:
+	void ShowPrefixTypeExp(ETNode<T> *node) {		//전위
+		if (node == NULL)
+			return;
+		std::cout << node->n_data << std::endl;
+		ShowPrefixTypeExp(GetLeftSubTree(node));
+		ShowPrefixTypeExp(GetRightSubTree(node));
+	}
+	void ShowInfixTypeExp(ETNode<T> *node) {		//중위
+		if (node == NULL)
+			return;
+		ShowInfixTypeExp(GetLeftSubTree(node));
+		std::cout << node->n_data << std::endl;
+		ShowInfixTypeExp(GetRightSubTree(node));
+	}
+	void ShowPostfixTypeExp(ETNode<T> *node) {		//후위
+		if (node == NULL)
+			return;
+		ShowPostfixTypeExp(GetLeftSubTree(node));
+		ShowPostfixTypeExp(GetRightSubTree(node));
+		std::cout << node->n_data << std::endl;
+	}
 	ETNode<T>* GetTopNode() {
 		return source;
 	}
@@ -161,7 +182,7 @@ public:
 		}
 	}
 	char* ProcessEInit(char* exp) {
-		
+		//TODO : *, / 의 우선순위 구현하기
 	}
 };
 
